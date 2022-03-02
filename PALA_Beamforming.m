@@ -87,6 +87,9 @@ for ii = 1:size(Bmode,3)
     im.CData = Bmode(:,:,ii);tt.String = ['Frame ' num2str(ii)];
     pp.XData = ListPos(:,1,ii)*P.Wavelength;pp.YData = ListPos(:,3,ii)*P.Wavelength;
     pause(.1)
+    
+    xlim([PARAM.x(1)*1000, PARAM.x(end)*1000])
+    ylim([PARAM.z(1)*1000, PARAM.z(end)*1000])
 end
 
 %% Compare with Vantage VSX beamforming
