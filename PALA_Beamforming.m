@@ -2,13 +2,12 @@
 % Beamforms simulated RF data of the provided datasets.
 % Draft implementation of a DAS (delay-and-sum) beamforming.
 %
-% Warning: beamformed images may be worst than those provided by Verasonics Vantage
-% beamformer.
-% All results and score of the article have been computed on images provided by Vantage
-% beamforming. Computing metrics on this homemade beamformer may result biaised scores.
+% Warning: beamformed images may be worst than those provided by Verasonics Vantage beamformer.
+% All results and scores of the article have been computed on images provided by Vantage
+% beamforming. Computing metrics on this homemade beamformer may result in biased scores.
 %
-% Created by Alexandre Corazza, 13/10/2021, adapated by Arthur Chavignon 25/02/2020
-% inspired from the function "dasmtx" of MUST toolbox www.biomecardio.com, Damien Garcia
+% Created by Alexandre Corazza, 13/10/2021, adapted by Arthur Chavignon 01/03/2022
+% inspired from the function "dasmtx.m" of MUST toolbox www.biomecardio.com, Damien Garcia
 %
 % DATE 2022.03.01 - VERSION 1.1
 % AUTHORS: Arthur Chavignon, Baptiste Heiles, Vincent Hingot. CNRS, Sorbonne Universite, INSERM.
