@@ -5,7 +5,7 @@ It can help to understand RF data to compare various beamforming technics used f
 
 This code was written by Alexandre Corazza, 13/10/2021, and adapted by Arthur Chavignon 03/03/2022.
 
-The Delay-and-Sum algorithm was inspired by the function `dasmtx.m` of _MUST_ (Matlab UltraSound Toolbox) [https://www.biomecardio.com/MUST](www.biomecardio.com) by Damien Garcia.
+The Delay-and-Sum algorithm was inspired from the function `dasmtx.m` of _MUST_ (Matlab UltraSound Toolbox) [https://www.biomecardio.com/MUST](www.biomecardio.com) by Damien Garcia.
 
 #### WARNING
 Beamformed images may be worse than those provided by Verasonics Vantage beamformer.
