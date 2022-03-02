@@ -3,7 +3,7 @@
 We provide an easy beamforming code to reconstruct radiofrequency data (RF) provided in the dataset. This beamformer was NOT used for this study and was NOT included in the review process.
 It can help to understand RF data to compare various beamforming technics used for Ultrasound Localization Microscopy.
 
-This code was written by Alexandre Corazza, 13/10/2021, and adapted by Arthur Chavignon 03/03/2022.
+This code was written by Alexandre Corazza, 13/10/2021, and merged to PALA by Arthur Chavignon 03/03/2022.
 
 The Delay-and-Sum algorithm was inspired from the function `dasmtx.m` of _MUST_ (Matlab UltraSound Toolbox) [www.biomecardio.com](https://www.biomecardio.com/MUST) by Damien Garcia.
 Reference on DAS beamforming: [*So you think you can DAS? A viewpoint on delay-and-sum beamforming*, Ultrasonics, 2021](https://doi.org/10.1016/j.ultras.2020.106309).
