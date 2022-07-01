@@ -10,6 +10,8 @@ Reference on DAS beamforming: [*So you think you can DAS? A viewpoint on delay-a
 
 Reference on pDAS beamforming: M.; Varray, F.; Béra, J.-C.; Cachard, C.; Nicolas, B. A Nonlinear Beamformer Based on p-th Root Compression—Application to Plane Wave Ultrasound Imaging. Appl. Sci. 2018, 8, 599. https://doi.org/10.3390/app8040599 
 
+Reference on iMAP beamforming: Chernyakova, T. & Eldar, Y. C. (2019) Ultrasound imaging using iterative maximum a-posteriori beamforming. [online]. Available from: https://patents.google.com/patent/WO2019142085A1/en?oq=WO2019142085.
+
 #### 1. WARNING
 Beamformed images may be worse than those provided by Verasonics Vantage beamformer.
 All results and scores of the article have been computed on images provided by Vantage beamforming. Computing metrics on this homemade beamformer may result in biased scores.
