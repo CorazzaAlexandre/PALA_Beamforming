@@ -41,8 +41,8 @@ tic
 % All the signal rephasing here
 for k = 1:length(PARAM.angles_list)
     PARAM.theta = PARAM.angles_list(k);
-    PARAM.migSIG_list{k} = F_BF_SIG_rephase(PARAM.SIG_list{k}, PARAM, X, Z);
-%     PARAM.migSIG_list{k} = F_BF_SIG_rephase(PARAM.SIG_list(:,:,k), PARAM, X, Z);
+    PARAM.migSIG_list{k} = BF_das_rephaseSignal(PARAM.SIG_list{k}, PARAM, X, Z);
+%     PARAM.migSIG_list{k} = BF_das_rephaseSignal(PARAM.SIG_list(:,:,k), PARAM, X, Z);
 end
 
 fwait= waitbar(0);

@@ -38,7 +38,7 @@ if ~isfield(PARAM, 'compound')
 end
 
 if ~PARAM.compound
-    migSIG = F_BF_SIG_rephase(SIG, PARAM, X, Z);
+    migSIG = BF_das_rephaseSignal(SIG, PARAM, X, Z);
     weights = abs(migSIG+epsilon_0) .^ ((1-PARAM.p_pDAS)/PARAM.p_pDAS);
 
     BF = sum(migSIG .* weights, 3);
@@ -48,7 +48,7 @@ if ~PARAM.compound
 elseif PARAM.compound %Compounding
     for k = 1:length(PARAM.angles_list)
         PARAM.theta = PARAM.angles_list(k);
-        migSIG = F_BF_SIG_rephase(PARAM.SIG_list{k}, PARAM, X, Z);
+        migSIG = BF_das_rephaseSignal(PARAM.SIG_list{k}, PARAM, X, Z);
         weights = abs(migSIG+epsilon_0) .^ ((1-PARAM.p_pDAS)/PARAM.p_pDAS);
 
         BF = sum(migSIG .* weights, 3);
