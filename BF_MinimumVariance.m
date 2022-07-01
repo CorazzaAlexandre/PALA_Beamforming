@@ -122,4 +122,6 @@ for kx = 1:length(PARAM.x)
     end
 end
 
+IQ = BF;
+
 end
