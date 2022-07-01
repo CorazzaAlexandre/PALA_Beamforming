@@ -22,6 +22,7 @@ function IQ = BF_MinimumVariance(SIG, PARAM, X, Z)
 %       - SIG_list: dictionnary with different signals obtained with the
 %                   angles in angles_list
 %       - Rcov_method: method to estimate the covariance matrix
+%           - 'classic': no estimation
 %           - 'FW': forward method (spatial smoothing)
 %           - 'FWBW': forward backward method
 %       - DeltaDL: amount of diagonal loading ==> R_DL = R + (DeltaDL/L)*trace(R)*I
@@ -29,73 +30,96 @@ function IQ = BF_MinimumVariance(SIG, PARAM, X, Z)
 %   - X, Z: grid on pixel (use meshgrid)
 
 % OUTPUTS:
-%   - BF: Beamformed image (in linear scale, you need to log compress it)
+%   - IQ: Beamformed image (in linear scale, you need to log compress it)
 
 % Alexandre Corazza, 13/10/2021
 
 BF = zeros(length(PARAM.z), length(PARAM.x));
 
 tic
-migSIG = F_BF_SIG_rephase(SIG, PARAM, X, Z);
+
+% All the signal rephasing here
+for k = 1:length(PARAM.angles_list)
+    PARAM.theta = PARAM.angles_list(k);
+    PARAM.migSIG_list{k} = F_BF_SIG_rephase(PARAM.SIG_list{k}, PARAM, X, Z);
+%     PARAM.migSIG_list{k} = F_BF_SIG_rephase(PARAM.SIG_list(:,:,k), PARAM, X, Z);
+end
 
 fwait= waitbar(0);
 for kx = 1:length(PARAM.x)
     waitbar(kx/(length(PARAM.x)),fwait, num2str(toc));
     for kz = 1:length(PARAM.z)
+                
+        Rl = 0;
+        B = 0;
         
-        Xsig = migSIG(kz, kx, :);
-        Xsig = Xsig(:);
         %we do not take zeros values due to f-number to avoid shadow area on the edges
-        CXsig = cumsum(Xsig);
-        first_nonzero = find(Xsig~=0, 1, 'first');
-        last_nonzeros = find(CXsig==CXsig(end), 1, 'first');
-        Xsig = Xsig(first_nonzero:last_nonzeros);
-        M = length(Xsig);
-        L = floor(M*PARAM.LoverM);
-        
-        % Covariance matrix
-        if isequal(PARAM.Rcov_method,'FW') && ~PARAM.compound
-            Rhat = F_CM_spatial_smooth(Xsig, L);
-
-        elseif isequal(PARAM.Rcov_method,'FWBW') && ~PARAM.compound
-            Rhat = F_CM_forward_backward(Xsig, L);
-
+        %so we are looking for first and last non-zero value in the rephased signal
+        min_first_nonzero = PARAM.Nelements+1;
+        max_last_nonzeros = 0;
+        for kangle = 1:length(PARAM.angles_list)
+            migSIGk = PARAM.migSIG_list{kangle};
+            Xsig = migSIGk(kz, kx, :);
+            Xsig = Xsig(:);
+            
+            CXsig = cumsum(Xsig);
+            first_nonzero = find(Xsig~=0, 1, 'first');
+            last_nonzeros = find(CXsig==CXsig(end), 1, 'first');
+            
+            min_first_nonzero = min(first_nonzero, min_first_nonzero);
+            max_last_nonzeros = max(last_nonzeros, max_last_nonzeros);
         end
         
-        a = ones(L,1);
-        a = a/norm(a);
-        
-        if trace(abs(Rhat))~=0 % (avoid inverting empty matrix in noiseless situation)
-            %diagonal loading
-            if ~isequal(PARAM.Rcov_method,'FWBW')
-            Rhat = Rhat + eye(size(Rhat))*(PARAM.DeltaDL/L)*trace(abs(Rhat));
-            end
+        for kangle = 1:length(PARAM.angles_list)
+
+            migSIGk = PARAM.migSIG_list{kangle};
+            Xsig = migSIGk(kz, kx, :);
+            Xsig = Xsig(:);
+            Xsig = Xsig(min_first_nonzero:max_last_nonzeros);
+            M = length(Xsig);
+            L = floor(M*PARAM.LoverM);
             
-            
-            invR = inv(Rhat);
-            
-            if isequal(PARAM.capon_approach, 'power')
-            B =  1  / (a' * invR * a);
-            end
-            
-            if isequal(PARAM.capon_approach, 'amplitude')
-            w = ( invR * a ) ./ (a' * invR * a);
-            B = 0;
-            
+            %Covariance matrix
+                if isequal(PARAM.Rcov_method, 'FW')
+                    Rl = Rl + F_CM_spatial_smooth(Xsig, L);
+                else
+                    Rl = Rl + F_CM_forward_backward(Xsig, L);
+                end
+           
+            %we take the mean of the rephased signal to reduce computing
+            %time
             for l = 1:M-L+1
                 Xl = Xsig(l:l+L-1);
-                B = B + w'*Xl;
+                B = B + Xl;
             end
-            end
-
-            
-        else
-            B = 0;
-            w = 0;
-        end
+                  
     
-        BF(kz,kx) = BF(kz,kx) + B/(M-L+1);
-                      
+        if kangle == length(PARAM.angles_list)
+                       
+            Rhat = Rl / length(PARAM.angles_list);
+
+            if trace(abs(Rhat))~=0 % (avoid inverting empty matrix in noiseless situation)
+                %diagonal loading
+                if ~isequal(PARAM.Rcov_method,'FWBW')
+                Rhat = Rhat + eye(size(Rhat))*(PARAM.DeltaDL/L)*trace(abs(Rhat));
+                end         
+
+                %invert and weights computation
+                invR = inv(Rhat);
+                a = ones(L,1);
+                a = a/norm(a);
+                w = ( invR * a ) ./ (a' * invR * a);
+
+            else
+                B = 0;
+                w = 0;
+            end
+            
+            BF(kz,kx) = BF(kz,kx) + w'*B/(M-L+1);
+        end
+        
+        end
     end
 end
+
 end
