@@ -8,6 +8,8 @@ This code was written by Alexandre Corazza, 13/10/2021, and merged to PALA by Ar
 The Delay-and-Sum algorithm was inspired from the function `dasmtx.m` of _MUST_ (Matlab UltraSound Toolbox) [www.biomecardio.com](https://www.biomecardio.com/MUST) by Damien Garcia.
 Reference on DAS beamforming: [*So you think you can DAS? A viewpoint on delay-and-sum beamforming*, Ultrasonics, 2021](https://doi.org/10.1016/j.ultras.2020.106309).
 
+Reference on Capon beamforming and covariance matrix estimation: Asl BM, Mahloojifar A. Contrast enhancement and robustness improvement of adaptive ultrasound imaging using forward-backward minimum variance beamforming. IEEE Trans Ultrason Ferroelectr Freq Control. 2011 Apr;58(4):858-67. doi: 10.1109/TUFFC.2011.1880. PMID: 21507765.
+
 Reference on pDAS beamforming: M.; Varray, F.; Béra, J.-C.; Cachard, C.; Nicolas, B. A Nonlinear Beamformer Based on p-th Root Compression—Application to Plane Wave Ultrasound Imaging. Appl. Sci. 2018, 8, 599. https://doi.org/10.3390/app8040599 
 
 Reference on iMAP beamforming: Chernyakova, T. & Eldar, Y. C. (2019) Ultrasound imaging using iterative maximum a-posteriori beamforming. [online]. Available from: https://patents.google.com/patent/WO2019142085A1/en?oq=WO2019142085.
