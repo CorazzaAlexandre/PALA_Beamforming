@@ -45,7 +45,8 @@ for k = 1:length(PARAM.angles_list)
 end
 migSIG = migSIG./length(PARAM.angles_list);
 
-xt = F_BF_das(migSIG, PARAM, X, Z); %x0
+PARAM.compound = 0;
+xt = BF_DelayAndSum(migSIG, PARAM, X, Z); %x0
 
 for kx = 1:length(PARAM.x)
     for kz = 1:length(PARAM.z)
