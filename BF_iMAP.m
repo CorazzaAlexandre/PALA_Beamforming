@@ -1,8 +1,6 @@
-function xt = F_BF_iMAP(SIG, PARAM, X, Z)
+function xt = F_BF_iMAP(PARAM, X, Z)
 % iMAP method
 % INPUTS:
-%   - SIG: RF or IQ signal matrix
-
 %   - PARAM: structure containing:
 %       - f0: central frequency of US wave
 %       - fs: sampling frequency
@@ -39,7 +37,6 @@ function xt = F_BF_iMAP(SIG, PARAM, X, Z)
 
 % Alexandre Corazza, 13/10/2021
 
-xt = F_BF_das(SIG, PARAM, X, Z); %x0
 
 migSIG = 0;
 for k = 1:length(PARAM.angles_list)
@@ -48,6 +45,7 @@ for k = 1:length(PARAM.angles_list)
 end
 migSIG = migSIG./length(PARAM.angles_list);
 
+xt = F_BF_das(migSIG, PARAM, X, Z); %x0
 
 for kx = 1:length(PARAM.x)
     for kz = 1:length(PARAM.z)
